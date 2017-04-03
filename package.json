@@ -1,0 +1,15 @@
+{
+  "name": "effects-as-data-generate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "case": "^1.5.2",
+    "prompt": "^1.0.0"
+  }
+}
