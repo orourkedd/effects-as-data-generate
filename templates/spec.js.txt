@@ -1,0 +1,10 @@
+const { testIt } = require('effects-as-data/test')
+const { {{{name}}} } = require('./{{{fileName}}}')
+
+const test{{{nameCapitalized}}} = testIt({{{name}}})
+
+test('{{{name}}}() should...', test{{{nameCapitalized}}}(() => {
+  return [
+    []
+  ]
+}))
