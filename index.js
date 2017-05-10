@@ -1,93 +1,31 @@
 const program = require('commander');
 const fxns = require('./effects');
+const chalk = require('chalk');
+const {failure, isFailure} = require('effects-as-data');
 
 program.version('0.0.1').command('init').action(function() {
-  fxns.init().then(console.log).catch(console.error);
+  fxns.init().then(printResult).catch(printFailure);
 });
 
 program.version('0.0.1').command('fn').action(function(fn) {
-  fxns.newFn(fn).then(console.log).catch(console.error);
+  fxns.newFn(fn).then(printResult).catch(printFailure);
 });
 
-program.version('0.0.1').command('findrc').action(function() {
-  fxns.findrc().then(console.log).catch(console.error);
-});
+function printResult(result) {
+  if (isFailure(result)) printFailure(result);
+  else printSuccess(result);
+}
 
-//
-// program
-//   .version('0.0.1')
-//   .command('foo <dir> [otherDirs...]')
-//   .action(function(dir, otherDirs) {
-//     console.log('rmdir %s', dir);
-//     if (otherDirs) {
-//       otherDirs.forEach(function(oDir) {
-//         console.log('rmdir %s', oDir);
-//       });
-//     }
-//   });
+function printSuccess(result) {
+  console.error(chalk.green(result.payload.message));
+}
+
+function printFailure(result) {
+  const f = failure(result);
+  console.error(chalk.red(f.error.message));
+  if (f.error.stack) {
+    console.error(f.error.stack);
+  }
+}
 
 program.parse(process.argv);
-
-// const prompt = require('prompt')
-// const fs = require('fs')
-// const { snake, pascal } = require('case')
-//
-// function fnTemplate (name) {
-//   return `function * ${name} () {
-//
-// }
-//
-// module.exports = {
-//   ${name}
-// }
-// `
-// }
-//
-// function specTemplate (name) {
-//   const fileName = snake(name)
-//   const nameCapitalized = pascal(name)
-//   return `const { testIt } = require('effects-as-data/test')
-// const { ${name} } = require('./${fileName}')
-//
-// const test${nameCapitalized} = testIt(${name})
-//
-// describe('${fileName}.js', () => {
-//   describe('${name}()', () => {
-//     it('should...', test${nameCapitalized}(() => {
-//       return [
-//         []
-//       ]
-//     }))
-//   })
-// })
-// `
-// }
-//
-// prompt.start()
-//
-// prompt.get(['Enter the function name'], function (err, result) {
-//   if (err) {
-//     console.error(err)
-//     process.exit(1)
-//   }
-//
-//   const name = result['Enter the function name']
-//   const fileName = snake(name)
-//
-//   if (!name) {
-//     console.error('A function name is required!')
-//     process.exit(1)
-//   }
-//
-//   if (fs.existsSync(`${fileName}.js`)) {
-//     console.error(`${fileName}.js already exists.`)
-//     process.exit(1)
-//   }
-//   fs.writeFileSync(`${fileName}.js`, fnTemplate(name))
-//
-//   if (fs.existsSync(`${fileName}.spec.js`)) {
-//     console.error(`${fileName}.spec.js already exists.`)
-//     process.exit(1)
-//   }
-//   fs.writeFileSync(`${fileName}.spec.js`, specTemplate(name))
-// })
