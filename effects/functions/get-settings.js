@@ -4,7 +4,7 @@ const {identity, merge} = require('ramda');
 const {failure, isFailure} = require('effects-as-data');
 
 function* getSettings() {
-  const parts = __dirname.split(path.sep).filter(identity);
+  const parts = process.cwd().split(path.sep).filter(identity);
 
   let filePath;
   let folderPath;
