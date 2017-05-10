@@ -1,3 +1,6 @@
+const actions = require('../actions')
+const { isFailure } = require('effects-as-data')
+
 function * {{{name}}} () {
 
 }

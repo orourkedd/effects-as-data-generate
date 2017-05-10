@@ -104,9 +104,9 @@ function* writeFnIndex({functionsIndex, functionsPath}) {
 
   const functionsList = values(functionsIndex);
   const exportsStatement = `module.exports = { ${functionsList.join(', ')} }`;
-  const fileText = `${requires.join('\n')}\n${exportsStatement}`;
+  const fileText = `${requires.join('\n')}\n\n${exportsStatement}`;
   const $writeResult = yield actions.writeFile(
-    path.join(functionsPath, 'fn-index.js'),
+    path.join(functionsPath, 'index.js'),
     fileText,
     {
       encoding: 'utf8',
