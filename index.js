@@ -1,21 +1,30 @@
 const program = require('commander');
 const fxns = require('./effects');
 
-program.version('0.0.1').command('init').action(function(fn) {
+program.version('0.0.1').command('init').action(function() {
   fxns.init().then(console.log).catch(console.error);
 });
 
-program
-  .version('0.0.1')
-  .command('foo <dir> [otherDirs...]')
-  .action(function(dir, otherDirs) {
-    console.log('rmdir %s', dir);
-    if (otherDirs) {
-      otherDirs.forEach(function(oDir) {
-        console.log('rmdir %s', oDir);
-      });
-    }
-  });
+program.version('0.0.1').command('fn').action(function(fn) {
+  fxns.newFn(fn).then(console.log).catch(console.error);
+});
+
+program.version('0.0.1').command('findrc').action(function() {
+  fxns.findrc().then(console.log).catch(console.error);
+});
+
+//
+// program
+//   .version('0.0.1')
+//   .command('foo <dir> [otherDirs...]')
+//   .action(function(dir, otherDirs) {
+//     console.log('rmdir %s', dir);
+//     if (otherDirs) {
+//       otherDirs.forEach(function(oDir) {
+//         console.log('rmdir %s', oDir);
+//       });
+//     }
+//   });
 
 program.parse(process.argv);
 
