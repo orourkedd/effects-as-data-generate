@@ -6,6 +6,7 @@ const { {{{name}}} } = require('./{{{fileName}}}')
 const test{{{nameCapitalized}}} = testIt({{{name}}})
 
 test('{{{name}}}() should...', test{{{nameCapitalized}}}(() => {
+  // prettier-ignore
   return [
     []
   ]
