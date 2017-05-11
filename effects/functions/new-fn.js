@@ -85,7 +85,7 @@ function* writeIndex({ fileName, fn, settings }) {
   const updatedFunctionsIndex = merge($functionsIndex.payload, {
     [fileName]: fn
   });
-  const indexString = JSON.stringify(updatedFunctionsIndex);
+  const indexString = JSON.stringify(updatedFunctionsIndex, true, 2);
   const $writeResult = yield actions.writeFile(indexPath, indexString, {
     encoding: 'utf8'
   });
