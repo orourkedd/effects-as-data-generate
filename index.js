@@ -1,14 +1,15 @@
 const program = require('commander');
 const fxns = require('./effects');
 const chalk = require('chalk');
-const {failure, isFailure} = require('effects-as-data');
+const { failure, isFailure } = require('effects-as-data');
 
 program.version('0.0.1').command('init').action(function() {
   fxns.init().then(printResult).catch(printFailure);
 });
 
 program.version('0.0.1').command('fn').action(function(fn) {
-  fxns.newFn(fn).then(printResult).catch(printFailure);
+  const fnName = typeof fn === 'string' ? fn : null;
+  fxns.newFn(fnName).then(printResult).catch(printFailure);
 });
 
 function printResult(result) {
