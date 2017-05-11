@@ -41,6 +41,11 @@ function* newFn(fn) {
 }
 
 function* writeFunction({ nameCamel, fileName, settings }) {
+  const filePath = path.join(settings.functionsPath, fileName + '.js');
+  const $fnAlreadyExists = yield actions.fileExists(filePath);
+  if (isFailure($fnAlreadyExists)) return $fnAlreadyExists;
+  if ($fnAlreadyExists.payload)
+    return failure(`${nameCamel}() already exists.`);
   const $functionTemplate = yield actions.readFile(
     path.join(__dirname, '../../templates/fn.js.txt'),
     { encoding: 'utf8' }
@@ -51,14 +56,16 @@ function* writeFunction({ nameCamel, fileName, settings }) {
     nameCamel,
     $functionTemplate.payload
   );
-  return yield actions.writeFile(
-    path.join(settings.functionsPath, fileName + '.js'),
-    functionText,
-    { encoding: 'utf8' }
-  );
+  return yield actions.writeFile(filePath, functionText, { encoding: 'utf8' });
 }
 
 function* writeSpec({ nameCamel, namePascal, fileName, settings }) {
+  const filePath = path.join(settings.functionsPath, fileName + '.spec.js');
+  const $specAlreadExists = yield actions.fileExists(filePath);
+  if (isFailure($specAlreadExists)) return $specAlreadExists;
+  if ($specAlreadExists.payload)
+    return failure(`${nameCamel}() spec already exists.`);
+
   const $specTemplate = yield actions.readFile(
     path.join(__dirname, '../../templates/spec.js.txt'),
     { encoding: 'utf8' }
@@ -69,11 +76,7 @@ function* writeSpec({ nameCamel, namePascal, fileName, settings }) {
     replace(/{{{nameCapitalized}}}/g, namePascal),
     replace(/{{{fileName}}}/g, fileName)
   )($specTemplate.payload);
-  return yield actions.writeFile(
-    path.join(settings.functionsPath, fileName + '.spec.js'),
-    specText,
-    { encoding: 'utf8' }
-  );
+  return yield actions.writeFile(filePath, specText, { encoding: 'utf8' });
 }
 
 function* writeIndex({ fileName, fn, settings }) {

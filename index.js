@@ -18,7 +18,7 @@ function printResult(result) {
 }
 
 function printSuccess(result) {
-  console.error(chalk.green(result.payload.message));
+  console.log(chalk.green(result.payload.message));
 }
 
 function printFailure(result) {
